@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using OpenTK;
+﻿using OpenTK;
 
 namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace
 {
@@ -32,6 +28,11 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.Graph
 
         public override int TextureCoordsCount { get { return faces.Count * 3; } }
 
+        
+        public ObjVolume()
+        {
+            //System.Console.WriteLine("FLORENCE: Graphics: ObjVolume");
+        }
 
         public override Vector3[] GetNormals()
         {

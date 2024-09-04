@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenTK;
+﻿using OpenTK;
 
 namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace
 {
@@ -10,6 +6,8 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.Graph
     {
         public Light(Vector3 position, Vector3 color, float diffuseintensity = 1.0f, float ambientintensity = 1.0f)
         {
+            //System.Console.WriteLine("FLORENCE: Graphics: Light");
+
             Position = position;
             Color = color;
 

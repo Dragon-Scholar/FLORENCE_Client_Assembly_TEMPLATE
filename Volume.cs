@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenTK;
-using FLORENCE_Client;
+﻿using OpenTK;
 
 namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace
 {
@@ -26,6 +21,11 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.Graph
         Vector3[] Normals = new Vector3[0];
 
         public Material Material = new Material();
+
+        public Volume()
+        {
+            //System.Console.WriteLine("FLORENCE: Graphics: Volume");
+        }
 
         public abstract Vector3[] GetVerts();
         public abstract int[] GetIndices(int offset = 0);

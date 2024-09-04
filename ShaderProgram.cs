@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using OpenTK.Graphics.OpenGL;
-using System.IO;
 
 namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace
 {
@@ -21,6 +17,7 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.Graph
 
         public ShaderProgram()
         {
+            //System.Console.WriteLine("FLORENCE: Graphics: ShaderProgram");
             ProgramID = GL.CreateProgram();
         }
 

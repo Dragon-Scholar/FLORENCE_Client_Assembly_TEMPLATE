@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using OpenTK.Mathematics;
-using OpenTK.Windowing.Desktop;
 
 namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace
 {
     class Graphics : GameWindow
     {
-        public Graphics(GameWindowSettings gws, NativeWindowSettings nws)
-            : base(gws, nws)
+        public Graphics()
+            : base(512, 512, new GraphicsMode(32, 24, 0, 4))
         {
-
+            System.Console.WriteLine("FLORENCE: Graphics");
         }
 
         Vector3[] vertdata;
@@ -29,16 +23,16 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace
         int[] indicedata;
         int ibo_elements;
 
-        List<Volume> objects = new List<Volume>();
-        Camera cam = new Camera();
-        Light activeLight = new Light(new Vector3(), new Vector3(0.9f, 0.80f, 0.8f));
+        List<FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Volume> objects = new List<FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Volume>();
+        FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Camera camera = new FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Camera();
+        FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Light activeLight = new FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Light(new Vector3(), new Vector3(0.9f, 0.80f, 0.8f));
         Vector2 lastMousePos = new Vector2();
         Matrix4 view = Matrix4.Identity;
 
         Dictionary<string, int> textures = new Dictionary<string, int>();
-        Dictionary<string, ShaderProgram> shaders = new Dictionary<string, ShaderProgram>();
+        Dictionary<string, FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.ShaderProgram> shaders = new Dictionary<string, FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.ShaderProgram>();
         string activeShader = "normal";
-        Dictionary<String, Material> materials = new Dictionary<string, Material>();
+        Dictionary<String, FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Material> materials = new Dictionary<string, FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Material>();
 
         float time = 0.0f;
 
@@ -46,42 +40,26 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace
         {
             lastMousePos = new Vector2(Mouse.X, Mouse.Y);
             CursorVisible = false;
-            cam.MouseSensitivity = 0.0025f;
+            camera.MouseSensitivity = 0.0025f;
 
             GL.GenBuffers(1, out ibo_elements);
 
             // Load shaders from file
-            shaders.Add("default", new ShaderProgram("vs.glsl", "fs.glsl", true));
-            shaders.Add("textured", new ShaderProgram("vs_tex.glsl", "fs_tex.glsl", true));
-            shaders.Add("normal", new ShaderProgram("vs_norm.glsl", "fs_norm.glsl", true));
-            shaders.Add("lit", new ShaderProgram("vs_lit.glsl", "fs_lit.glsl", true));
+            shaders.Add("default", new FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.ShaderProgram("..\\..\\..\\Vertex_Shaders\\vs.glsl", "..\\..\\..\\Fragment_Shaders\\fs.glsl", true));
+            shaders.Add("textured", new FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.ShaderProgram("..\\..\\..\\Vertex_Shaders\\vs_tex.glsl", "..\\..\\..\\Fragment_Shaders\\fs_tex.glsl", true));
+            shaders.Add("normal", new FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.ShaderProgram("..\\..\\..\\Vertex_Shaders\\vs_norm.glsl", "..\\..\\..\\Fragment_Shaders\\fs_norm.glsl", true));
+            shaders.Add("lit", new FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.ShaderProgram("..\\..\\..\\Vertex_Shaders\\vs_lit.glsl", "..\\..\\..\\Fragment_Shaders\\fs_lit.glsl", true));
 
             activeShader = "lit";
 
-            loadMaterials("opentk.mtl");
-
-            // Create our objects
-            TexturedCube tc = new TexturedCube();
-            tc.TextureID = textures[materials["opentk1"].DiffuseMap];
-            tc.CalculateNormals();
-            tc.Material = materials["opentk1"];
-            objects.Add(tc);
-
-            TexturedCube tc2 = new TexturedCube();
-            tc2.Position += new Vector3(1f, 1f, 1f);
-            tc2.TextureID = textures[materials["opentk2"].DiffuseMap];
-            tc2.CalculateNormals();
-            tc2.Material = materials["opentk2"];
-            objects.Add(tc2);
-
             // Move camera away from origin
-            cam.Position += new Vector3(0f, 0f, 3f);
+            camera.Position += new Vector3(0f, 0f, 3f);
             
-            textures.Add("earth.png", loadImage("earth.png"));
-            ObjVolume earth = ObjVolume.LoadFromFile("earth.obj");
+            textures.Add("earth.png", loadImage("..\\..\\..\\Textures\\earth.png"));
+            FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.ObjVolume earth = FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.ObjVolume.LoadFromFile("..\\..\\..\\Characters\\earth.obj");
             earth.TextureID = textures["earth.png"];
             earth.Position += new Vector3(1f, 1f, -2f);
-            earth.Material = new Material(new Vector3(0.15f), new Vector3(1), new Vector3(0.2f), 5);
+            earth.Material = new FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Material(new Vector3(0.15f), new Vector3(1), new Vector3(0.2f), 5);
             objects.Add(earth);
         }
 
@@ -92,7 +70,7 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace
         /// <param name="filename">MTL file to load from</param>
         private void loadMaterials(String filename)
         {
-            foreach (var mat in Material.LoadFromFile(filename))
+            foreach (var mat in FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Material.LoadFromFile(filename))
             {
                 if (!materials.ContainsKey(mat.Key))
                 {
@@ -101,7 +79,7 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace
             }
 
             // Load textures
-            foreach (Material mat in materials.Values)
+            foreach (FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Material mat in materials.Values)
             {
                 if (File.Exists(mat.AmbientMap) && !textures.ContainsKey(mat.AmbientMap))
                 {
@@ -136,7 +114,7 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace
 
             initProgram();
 
-            Title = "Hello OpenTK!";
+            Title = "FLORENCE: Game";
             GL.ClearColor(Color.CornflowerBlue);
             GL.PointSize(5f);
         }
@@ -154,7 +132,7 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace
             int indiceat = 0;
 
             // Draw all objects
-            foreach (Volume v in objects)
+            foreach (FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Volume v in objects)
             {
                 GL.BindTexture(TextureTarget.Texture2D, v.TextureID);
 
@@ -239,7 +217,7 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace
 
             // Assemble vertex and indice data for all volumes
             int vertcount = 0;
-            foreach (Volume v in objects)
+            foreach (FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Volume v in objects)
             {
                 verts.AddRange(v.GetVerts().ToList());
                 inds.AddRange(v.GetIndices(vertcount).ToList());
@@ -287,19 +265,11 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace
             // Update object positions
             time += (float)e.Time;
 
-            objects[0].Position = new Vector3(0.3f, -0.5f + (float)Math.Sin(time), -3.0f);
-            objects[0].Rotation = new Vector3(0.55f * time, 0.25f * time, 0);
-            objects[0].Scale = new Vector3(0.5f, 0.5f, 0.5f);
-
-            objects[1].Position = new Vector3(-1f, 0.5f + (float)Math.Cos(time), -2.0f);
-            objects[1].Rotation = new Vector3(-0.25f * time, -0.35f * time, 0);
-            objects[1].Scale = new Vector3(0.7f, 0.7f, 0.7f);
-
             // Update model view matrices
-            foreach (Volume v in objects)
+            foreach (FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace.Volume v in objects)
             {
                 v.CalculateModelMatrix();
-                v.ViewProjectionMatrix = cam.GetViewMatrix() * Matrix4.CreatePerspectiveFieldOfView(1.3f, ClientSize.Width / (float)ClientSize.Height, 1.0f, 40.0f); 
+                v.ViewProjectionMatrix = camera.GetViewMatrix() * Matrix4.CreatePerspectiveFieldOfView(1.3f, ClientSize.Width / (float)ClientSize.Height, 1.0f, 40.0f); 
                 v.ModelViewProjectionMatrix = v.ModelMatrix * v.ViewProjectionMatrix;
             }
 
@@ -311,7 +281,7 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ibo_elements);
             GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indicedata.Length * sizeof(int)), indicedata, BufferUsageHint.StaticDraw);
             
-            view = cam.GetViewMatrix();
+            view = camera.GetViewMatrix();
         }
 
         /// <summary>
@@ -324,38 +294,40 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace
             if (Keyboard.GetState().IsKeyDown(Key.Escape))
             {
                 Exit();
+                this.Close();
+                this.Dispose(); 
             }
 
             /** Let's start by adding WASD input (feel free to change the keys if you want,
              * hopefully a later tutorial will have a proper input manager) for translating the camera. */
             if (Keyboard.GetState().IsKeyDown(Key.W))
             {
-                cam.Move(0f, 0.1f, 0f);
+                camera.Move(0f, 0.1f, 0f);
             }
 
             if (Keyboard.GetState().IsKeyDown(Key.S))
             {
-                cam.Move(0f, -0.1f, 0f);
+                camera.Move(0f, -0.1f, 0f);
             }
 
             if (Keyboard.GetState().IsKeyDown(Key.A))
             {
-                cam.Move(-0.1f, 0f, 0f);
+                camera.Move(-0.1f, 0f, 0f);
             }
 
             if (Keyboard.GetState().IsKeyDown(Key.D))
             {
-                cam.Move(0.1f, 0f, 0f);
+                camera.Move(0.1f, 0f, 0f);
             }
 
             if (Keyboard.GetState().IsKeyDown(Key.Q))
             {
-                cam.Move(0f, 0f, 0.1f);
+                camera.Move(0f, 0f, 0.1f);
             }
 
             if (Keyboard.GetState().IsKeyDown(Key.E))
             {
-                cam.Move(0f, 0f, -0.1f);
+                camera.Move(0f, 0f, -0.1f);
             }
 
             if (Focused)
@@ -363,7 +335,7 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace
                 Vector2 delta = lastMousePos - new Vector2(OpenTK.Input.Mouse.GetState().X, OpenTK.Input.Mouse.GetState().Y);
                 lastMousePos += delta;
 
-                cam.AddRotation(delta.X, delta.Y);
+                camera.AddRotation(delta.X, delta.Y);
                 lastMousePos = new Vector2(OpenTK.Input.Mouse.GetState().X, OpenTK.Input.Mouse.GetState().Y);
             }
         }

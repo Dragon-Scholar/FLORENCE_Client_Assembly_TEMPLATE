@@ -1,5 +1,4 @@
-﻿
-namespace FLORENCE_Client
+﻿namespace FLORENCE_Client
 {
     public class Program
     {

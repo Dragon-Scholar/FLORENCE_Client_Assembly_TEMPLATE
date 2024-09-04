@@ -1,23 +1,23 @@
 {
   "version": 2,
-  "dgSpecHash": "xEL8U2q1PiE=",
+  "dgSpecHash": "oGB4zTKIdKw=",
   "success": true,
   "projectFilePath": "C:\\Users\\Legel.DESKTOP-RKOK0RG\\source\\repos\\FLORENCE_Client_Assembly_TEMPLATE\\FLORENCE_Client_Assembly_TEMPLATE.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\microsoft.win32.systemevents\\8.0.0\\microsoft.win32.systemevents.8.0.0.nupkg.sha512",
-    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\opentk\\4.8.2\\opentk.4.8.2.nupkg.sha512",
-    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\opentk.audio.openal\\4.8.2\\opentk.audio.openal.4.8.2.nupkg.sha512",
-    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\opentk.compute\\4.8.2\\opentk.compute.4.8.2.nupkg.sha512",
-    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\opentk.core\\4.8.2\\opentk.core.4.8.2.nupkg.sha512",
-    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\opentk.graphics\\4.8.2\\opentk.graphics.4.8.2.nupkg.sha512",
-    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\opentk.input\\4.8.2\\opentk.input.4.8.2.nupkg.sha512",
-    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\opentk.mathematics\\4.8.2\\opentk.mathematics.4.8.2.nupkg.sha512",
-    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\opentk.redist.glfw\\3.3.8.39\\opentk.redist.glfw.3.3.8.39.nupkg.sha512",
-    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\opentk.windowing.common\\4.8.2\\opentk.windowing.common.4.8.2.nupkg.sha512",
-    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\opentk.windowing.desktop\\4.8.2\\opentk.windowing.desktop.4.8.2.nupkg.sha512",
-    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\opentk.windowing.graphicslibraryframework\\4.8.2\\opentk.windowing.graphicslibraryframework.4.8.2.nupkg.sha512",
-    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\system.drawing.common\\8.0.8\\system.drawing.common.8.0.8.nupkg.sha512",
-    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\5.0.0\\system.runtime.compilerservices.unsafe.5.0.0.nupkg.sha512"
+    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\opentk\\2.0.0\\opentk.2.0.0.nupkg.sha512",
+    "C:\\Users\\Legel.DESKTOP-RKOK0RG\\.nuget\\packages\\system.drawing.common\\8.0.8\\system.drawing.common.8.0.8.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'OpenTK 2.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "libraryId": "OpenTK",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

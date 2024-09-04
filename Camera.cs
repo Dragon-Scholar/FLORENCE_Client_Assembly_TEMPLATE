@@ -1,5 +1,4 @@
 ﻿using OpenTK;
-using System;
 
 namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.GraphicsSpace
 {
@@ -10,6 +9,10 @@ namespace FLORENCE_Client.FrameworkSpace.ClientSpace.DataSpace.OutputSpace.Graph
         public float MoveSpeed = 0.2f;
         public float MouseSensitivity = 0.01f;
 
+        public Camera()
+        {
+            System.Console.WriteLine("FLORENCE: Graphics: Camera");
+        }
         /// <summary>
         /// Create a view matrix for this Camera
         /// </summary>
