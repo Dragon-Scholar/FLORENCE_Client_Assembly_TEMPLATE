@@ -17,7 +17,7 @@ Version 17.10.5
 
 ### OpenTK
 
-Version: 4.8.2
+Version: 2.0.0
 
 ### .Net
 
